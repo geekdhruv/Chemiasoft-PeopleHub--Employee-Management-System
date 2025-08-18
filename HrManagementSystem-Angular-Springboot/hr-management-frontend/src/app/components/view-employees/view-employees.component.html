@@ -1,0 +1,88 @@
+<div class="employee-container">
+  <div class="employee-card">
+    <div class="employee-header">
+      <h2 class="employee-title">Employee Management</h2>
+      <p class="employee-subtitle">Manage organization's workforce</p>
+    </div>
+
+    <div class="employee-controls">
+      <div class="control-row">
+        <button class="btn btn-primary control-btn" (click)="exportReposrts()">
+          <i class="fas fa-file-alt me-2"></i> Generate Report
+        </button>
+        
+        <div class="search-group">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" class="search-input" placeholder="Search by name" [(ngModel)]="searchName">
+        </div>
+        
+        <div class="search-group">
+          <i class="fas fa-envelope search-icon"></i>
+          <input type="text" class="search-input" placeholder="Search by email" [(ngModel)]="searchEmail">
+        </div>
+        
+        <div class="search-group">
+          <i class="fas fa-filter search-icon"></i>
+          <select class="search-select" [(ngModel)]="searchDepartment">
+            <option value="">All Departments</option>
+            <option *ngFor="let dept of departmentTypes" [value]="dept">{{ dept }}</option>
+          </select>
+        </div>
+        
+        <button class="btn btn-success control-btn" (click)="addEmployee()">
+          <i class="fas fa-plus-circle me-2"></i> Add Employee
+        </button>
+      </div>
+    </div>
+
+    <div class="employee-table-container">
+      <table class="employee-table">
+        <thead>
+          <tr>
+            <th class="text-center">#</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let employee of filteredEmployees(); let i = index" class="employee-row">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td><span class="employee-id">{{ employee.id }}</span></td>
+            <td>{{ employee.name }}</td>
+            <td class="employee-email">{{ employee.email }}</td>
+            <td>
+              <span class="department-badge" [ngClass]="getDepartmentClass(employee.departmentType)">
+                {{ employee.departmentType }}
+              </span>
+            </td>
+            <td>{{ employee.createdAt | date: 'medium' }}</td>
+            <td>{{ employee.updatedAt | date: 'medium' }}</td>
+            <td class="text-center action-buttons">
+              <button class="btn btn-warning btn-action" (click)="updateEmployee(employee)">
+                <i class="fas fa-edit me-1"></i>Edit
+              </button>
+              <button class="btn btn-danger btn-action" (click)="deleteEmployee(employee)">
+                <i class="fas fa-trash-alt me-1"></i>Delete
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredEmployees().length === 0" class="no-results">
+            <td colspan="8" class="text-center">
+              <i class="fas fa-folder-open fa-2x mb-2"></i>
+              <div>No employees found matching your search criteria</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="employee-footer">
+      <span class="employee-count">Total: {{ filteredEmployees().length }} employees</span>
+    </div>
+  </div>
+</div>

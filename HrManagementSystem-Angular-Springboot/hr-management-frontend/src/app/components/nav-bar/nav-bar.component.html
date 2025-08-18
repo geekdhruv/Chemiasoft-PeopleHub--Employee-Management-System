@@ -1,0 +1,41 @@
+<nav class="app-navbar">
+    <div class="navbar-container">
+        <div class="navbar-brand-container">
+            
+            <a class="navbar-brand" routerLink="/home">
+                
+                Chemiasoft PeopleHub
+            </a>
+            <span class="navbar-subtitle">Employee Leave Management System</span>
+        </div>
+
+
+        <div class="navbar-center">
+            <a class="nav-link" routerLink="/employee" routerLinkActive="active">Employee</a>
+            <a class="nav-link" routerLink="/leave" routerLinkActive="active">Leave</a>
+        </div>
+
+        <div class="navbar-actions">
+            <button *ngIf="!authService.isLoggedIn()" class="btn btn-login" (click)="login()">
+                <i class="fas fa-sign-in-alt me-2"></i> Login
+            </button>
+            <button *ngIf="authService.isLoggedIn()" class="btn btn-logout" (click)="logout()">
+                <i class="fas fa-sign-out-alt me-2"></i> Logout
+            </button>
+        </div>
+    </div>
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- style="height:32px; width:auto; vertical-align:middle; margin-left:2%;margin-right: 2px;margin-bottom: 10px; border:1px solid white;"> -->

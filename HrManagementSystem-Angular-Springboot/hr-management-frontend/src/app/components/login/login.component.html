@@ -1,0 +1,55 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h2 class="login-title">Welcome to Chemiasoft PeopleHub</h2>
+      <p class="login-subtitle">Employee Management Portal</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="username" class="form-label">
+          <i class="fas fa-user me-2"></i>Username
+        </label>
+        <input type="text" id="username" formControlName="username" class="form-input"
+          placeholder="Enter your username" />
+        <div *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid" class="error-message">
+          Username is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">
+          <i class="fas fa-lock me-2"></i>Password
+        </label>
+        <div class="password-input">
+          <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" class="form-input"
+            placeholder="Enter your password" />
+          <button type="button" class="password-toggle" (click)="togglePassword()">
+            <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+          </button>
+        </div>
+        <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="error-message">
+          Password is required
+        </div>
+      </div>
+
+      <button type="submit" class="login-button" [disabled]="loginForm.invalid">
+        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+      </button>
+
+      <div class="demo-credentials">
+        <p class="credentials-title">Demo Credentials</p>
+        <div class="credentials-box">
+          <div class="credential-item">
+            <span class="credential-label">Username:</span>
+            <span class="credential-value">admin</span>
+          </div>
+          <div class="credential-item">
+            <span class="credential-label">Password:</span>
+            <span class="credential-value">admin123</span>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

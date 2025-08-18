@@ -1,0 +1,66 @@
+.swal-custom-popup {
+    font-family: 'Segoe UI', sans-serif;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: #f6f6f6;
+}
+
+.swal-form-group {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.swal-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.swal-input,
+.swal-select {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.swal2-popup {
+    border-radius: 10px;
+}
+
+.swal-custom-confirm {
+    background-color: #287194 !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 8px 16px;
+    border-radius: 5px;
+}
+
+.swal-custom-cancel {
+    background-color: #d3d4ce !important;
+    color: #000 !important;
+    padding: 8px 16px;
+    border-radius: 5px;
+}
+
+.swal-wide {
+    width: 600px !important;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    margin-right: 0.5rem;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+}

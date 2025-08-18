@@ -1,0 +1,38 @@
+<div class="homepage-container">
+    <app-nav-bar></app-nav-bar>
+    <div class="hero-section">
+      <div class="hero-content">
+        <div class="logo-container">
+          <h1 class="company-name">Employee Management</h1>
+        </div>
+        <h2 class="portal-title">Employee Leave Management Portal</h2>
+        <p class="portal-description">
+          Streamline your HR processes with our comprehensive management system. 
+          Manage employees Leaves, and more in one centralized platform.
+        </p>
+        
+        <div class="action-buttons">
+          <button *ngIf="!authService.isLoggedIn()" class="btn btn-primary login-btn" routerLink="/login">
+            <i class="fas fa-sign-in-alt me-2"></i> Login to Portal
+          </button>
+          <button *ngIf="authService.isLoggedIn()" class="btn btn-success dashboard-btn">
+            <i class="fas fa-arrow-down me-2"></i>Select a Module You Want to Access
+          </button>
+        </div>
+        
+        <div class="features-container">
+          <div class="feature-card" routerLink="/employee">
+            <i class="fas fa-users feature-icon"></i>
+            <h4>Employee Management</h4>
+            <p>Efficiently manage your workforce</p>
+          </div>
+      
+          <div class="feature-card" routerLink="/leave">
+            <i class="fas fa-calendar-check feature-icon"></i>
+            <h4>Leave Management</h4>
+            <p>Streamlined leave requests</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

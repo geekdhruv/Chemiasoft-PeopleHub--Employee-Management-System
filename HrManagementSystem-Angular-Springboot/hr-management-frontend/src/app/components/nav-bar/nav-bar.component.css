@@ -1,0 +1,135 @@
+.app-navbar {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    padding: 0.8rem 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.navbar-brand-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.navbar-brand {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.navbar-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    font-weight: 300;
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    padding-left: 1rem;
+}
+
+.navbar-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-login,
+.btn-logout {
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 500;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.btn-login {
+    background-color: white;
+    color: #2563eb;
+    border: none;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-logout {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+}
+
+.btn-logout:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-center {
+    display: flex;
+    gap: 2rem;
+    justify-content: flex-end;
+    align-items: center;
+    flex: 1;
+    margin-right: 40px;
+}
+
+.navbar-center .nav-link {
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+    position: relative;
+    padding: 0.3rem 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.navbar-center .nav-link:hover {
+    color: #cbd5e1;
+}
+
+.navbar-center .nav-link.active::after {
+    content: '';
+    display: block;
+    height: 2px;
+    background-color: white;
+    margin-top: 4px;
+    border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+    .app-navbar {
+        padding: 0.8rem 1rem;
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .navbar-subtitle {
+        display: none;
+    }
+
+    .btn-login,
+    .btn-logout {
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-logo {
+        height: 35px;
+    }
+}

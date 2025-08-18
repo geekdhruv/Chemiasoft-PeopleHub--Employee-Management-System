@@ -1,0 +1,88 @@
+<div class="employee-container">
+    <div class="employee-card">
+        <div class="employee-header">
+            <h2 class="employee-title">Leave Management</h2>
+            <p class="employee-subtitle">Manage employee leave records</p>
+        </div>
+
+        <div class="employee-controls">
+            <div class="control-row">
+                <button class="btn btn-primary control-btn" (click)="exportReports()">
+                    <i class="fas fa-file-alt me-2"></i> Generate Report
+                </button>
+
+                <div class="search-group">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search by employee ID"
+                        [(ngModel)]="searchEmployeeId">
+                </div>
+
+                <div class="search-group">
+                    <i class="fas fa-filter search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search by Start Date" [(ngModel)]="startDate">
+                </div>
+
+                <div class="search-group">
+                    <i class="fas fa-calendar-alt search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search by End Date" [(ngModel)]="endDate">
+                </div>
+
+                <button class="btn btn-success control-btn" (click)="addLeave()">
+                    <i class="fas fa-plus-circle me-2"></i> Leave
+                </button>
+            </div>
+        </div>
+
+        <div class="employee-table-container">
+            <table class="employee-table">
+                <thead>
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th>Employee ID</th>
+                        <th>Name</th>
+                        <th>Leave Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let leave of filteredLeaves(); let i = index" class="employee-row">
+                        <td class="text-center">{{ i + 1 }}</td>
+                        <td>{{ leave.employee.id }}</td>
+                        <td>{{ leave.employee.name }}</td>
+                        <td>{{ leave.leaveType}}</td>
+                        <td>{{ leave.startDate }}</td>
+                        <td>{{ leave.endDate }}</td>
+                        <td>{{ leave.reason }}</td>
+                        <td>{{ leave.status }}</td>
+                        <td>{{ leave.createdAt }}</td>
+                        <td>{{ leave.updatedAt }}</td>
+                        <td class="text-center action-buttons">
+                            <button class="btn btn-warning btn-action" (click)="updateLeave(leave)">
+                                <i class="fas fa-edit me-1"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-action" (click)="deleteLeave(leave)">
+                                <i class="fas fa-trash-alt me-1"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="filteredLeaves().length === 0" class="no-results">
+                        <td colspan="11" class="text-center">
+                            <i class="fas fa-folder-open fa-2x mb-2"></i>
+                            <div>No Leaves found matching your search criteria</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="employee-footer">
+            <span class="employee-count">Total: {{ filteredLeaves().length }} Leaves</span>
+        </div>
+    </div>
+</div>
