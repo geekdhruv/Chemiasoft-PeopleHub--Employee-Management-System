@@ -4,6 +4,7 @@ import org.hrmanage.dto.EmployeeDto;
 import org.hrmanage.entity.EmployeeEntity;
 import org.hrmanage.repository.EmployeeRepository;
 import org.hrmanage.util.DepartmentType;
+import org.hrmanage.util.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,10 @@ class EmployeeServiceImplTest {
                 1,
                 "John Doe",
                 "johndoe@example.com",
+                "john.doe",
+                "password123",
                 DepartmentType.IT,
+                Role.EMPLOYEE,
                 LocalDate.of(2024, 1, 1),
                 LocalDate.of(2024, 1, 1)
         );
@@ -86,7 +90,7 @@ class EmployeeServiceImplTest {
     @DisplayName("Add Employee Success")
     void addEmployee() {
         EmployeeDto newEmployeeDto = new EmployeeDto(null, "Jane Doe", "janedoe@example.com", DepartmentType.HR, LocalDate.now(), LocalDate.now());
-        EmployeeEntity newEmployeeEntity = new EmployeeEntity(1, "Jane Doe", "janedoe@example.com", DepartmentType.HR, LocalDate.now(), LocalDate.now());
+        EmployeeEntity newEmployeeEntity = new EmployeeEntity(1, "Jane Doe", "janedoe@example.com", "jane.doe", "password123", DepartmentType.HR, Role.EMPLOYEE, LocalDate.now(), LocalDate.now());
 
         when(modelMapper.map(newEmployeeDto, EmployeeEntity.class)).thenReturn(newEmployeeEntity);
         when(employeeRepository.save(any(EmployeeEntity.class))).thenReturn(newEmployeeEntity);
@@ -101,7 +105,7 @@ class EmployeeServiceImplTest {
     @DisplayName("Update Employee Success")
     void updateEmployee() {
         EmployeeDto updatedEmployeeDto = new EmployeeDto(1, "Jane Doe", "janedoe@example.com", DepartmentType.HR, LocalDate.now(), LocalDate.now());
-        EmployeeEntity updatedEmployeeEntity = new EmployeeEntity(1, "Jane Doe", "janedoe@example.com", DepartmentType.HR, LocalDate.now(), LocalDate.now());
+        EmployeeEntity updatedEmployeeEntity = new EmployeeEntity(1, "Jane Doe", "janedoe@example.com", "jane.doe", "password123", DepartmentType.HR, Role.EMPLOYEE, LocalDate.now(), LocalDate.now());
 
         when(employeeRepository.existsById(1)).thenReturn(true);
         when(modelMapper.map(updatedEmployeeDto, EmployeeEntity.class)).thenReturn(updatedEmployeeEntity);

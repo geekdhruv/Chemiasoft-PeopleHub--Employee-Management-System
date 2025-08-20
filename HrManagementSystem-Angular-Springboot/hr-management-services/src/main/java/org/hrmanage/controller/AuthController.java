@@ -7,8 +7,11 @@ import org.hrmanage.dto.AuthRequestDto;
 import org.hrmanage.dto.AuthResponseDto;
 import org.hrmanage.dto.RegisterRequestDto;
 import org.hrmanage.dto.UserDto;
+import org.hrmanage.entity.EmployeeEntity;
+import org.hrmanage.repository.EmployeeRepository;
 import org.hrmanage.security.JwtUtil;
 import org.hrmanage.service.UserService;
+import org.hrmanage.util.Role;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,6 +35,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final UserService userService;
+    private final EmployeeRepository employeeRepository;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@Valid @RequestBody AuthRequestDto authRequest) {
@@ -45,8 +49,17 @@ public class AuthController {
 
             final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String token = jwtUtil.generateToken(userDetails);
+            
+            // Determine role based on username
+            Role role;
+            if ("admin".equals(userDetails.getUsername())) {
+                role = Role.ADMIN;
+            } else {
+                EmployeeEntity employee = employeeRepository.findByUsername(userDetails.getUsername());
+                role = employee != null ? employee.getRole() : Role.EMPLOYEE;
+            }
 
-            return ResponseEntity.ok(new AuthResponseDto(token, userDetails.getUsername()));
+            return ResponseEntity.ok(new AuthResponseDto(token, userDetails.getUsername(), role));
         } catch (BadCredentialsException e) {
             log.error("Authentication failed for user: {}", authRequest.getUsername());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

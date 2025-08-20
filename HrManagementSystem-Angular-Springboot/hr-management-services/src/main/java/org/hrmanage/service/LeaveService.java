@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface LeaveService {
     List<LeaveSendDto> getAllLeaves();
+    List<LeaveSendDto> getLeavesForCurrentUser(String username);
 
     LeaveSendDto getLeaveById(Integer id);
 
@@ -15,4 +16,9 @@ public interface LeaveService {
     LeaveSendDto updateLeave(Integer id, LeaveDto leaveDto);
 
     Boolean deleteLeave(Integer id);
+    Boolean deleteOwnLeave(Integer id, String username);
+
+    LeaveSendDto approveLeave(Integer id);
+
+    LeaveSendDto rejectLeave(Integer id);
 }

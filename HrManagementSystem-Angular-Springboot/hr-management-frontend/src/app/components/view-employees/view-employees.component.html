@@ -29,7 +29,7 @@
           </select>
         </div>
         
-        <button class="btn btn-success control-btn" (click)="addEmployee()">
+        <button *ngIf="authService.isAdmin()" class="btn btn-success control-btn" (click)="addEmployee()">
           <i class="fas fa-plus-circle me-2"></i> Add Employee
         </button>
       </div>
@@ -63,10 +63,10 @@
             <td>{{ employee.createdAt | date: 'medium' }}</td>
             <td>{{ employee.updatedAt | date: 'medium' }}</td>
             <td class="text-center action-buttons">
-              <button class="btn btn-warning btn-action" (click)="updateEmployee(employee)">
+              <button *ngIf="authService.isAdmin()" class="btn btn-warning btn-action" (click)="updateEmployee(employee)">
                 <i class="fas fa-edit me-1"></i>Edit
               </button>
-              <button class="btn btn-danger btn-action" (click)="deleteEmployee(employee)">
+              <button *ngIf="authService.isAdmin()" class="btn btn-danger btn-action" (click)="deleteEmployee(employee)">
                 <i class="fas fa-trash-alt me-1"></i>Delete
               </button>
             </td>
@@ -86,3 +86,4 @@
     </div>
   </div>
 </div>
+

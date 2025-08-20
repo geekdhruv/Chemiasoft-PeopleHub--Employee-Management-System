@@ -49,7 +49,8 @@
 }
 
 .btn-primary {
-    background-color: #007bff;
+    /* background-color: #007bff; */
+    background-color:#198754;
     color: white;
     border: none;
     padding: 0.5rem 1.2rem;

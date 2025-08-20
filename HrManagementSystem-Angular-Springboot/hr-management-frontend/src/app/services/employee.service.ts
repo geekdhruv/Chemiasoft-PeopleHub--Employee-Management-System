@@ -9,12 +9,12 @@ import { Employee, EmployeePost } from "../models/employee.model";
 })
 
 export class EmployeeService {
-    private apiUrl = `${environment.baseUrl}/employee`;
+    private apiUrl = `${environment.baseUrl}/employees`;
 
     constructor(private http: HttpClient) { }
 
     getAllEmployees(): Observable<Employee[]> {
-        return this.http.get<Employee[]>(`${this.apiUrl}`);
+        return this.http.get<Employee[]>(`${this.apiUrl}/list`);
     }
 
     getEmployeeById(employeeId: number): Observable<Employee> {
@@ -22,10 +22,10 @@ export class EmployeeService {
     }
 
     createEmployee(employee: EmployeePost): Observable<Employee> {
-        return this.http.post<Employee>(`${this.apiUrl}`, employee);
+        return this.http.post<Employee>(`${this.apiUrl}/add`, employee);
     }
 
-    updateEmployee(employee: Employee): Observable<Employee> {
+    updateEmployee(employee: any): Observable<Employee> {
         return this.http.put<Employee>(`${this.apiUrl}/${employee.id}`, employee);
     }
 

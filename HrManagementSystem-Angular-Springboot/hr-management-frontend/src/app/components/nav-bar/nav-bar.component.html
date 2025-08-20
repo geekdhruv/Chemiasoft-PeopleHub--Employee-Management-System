@@ -1,21 +1,25 @@
 <nav class="app-navbar">
     <div class="navbar-container">
         <div class="navbar-brand-container">
-            
             <a class="navbar-brand" routerLink="/home">
-                
                 Chemiasoft PeopleHub
             </a>
             <span class="navbar-subtitle">Employee Leave Management System</span>
         </div>
-
-
+        
         <div class="navbar-center">
-            <a class="nav-link" routerLink="/employee" routerLinkActive="active">Employee</a>
-            <a class="nav-link" routerLink="/leave" routerLinkActive="active">Leave</a>
+            <a *ngIf="authService.isLoggedIn() && authService.isAdmin()" class="nav-link" routerLink="/employee" routerLinkActive="active">Employee</a>
+            <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/leave" routerLinkActive="active">Leave</a>
         </div>
 
         <div class="navbar-actions">
+            <span *ngIf="authService.isLoggedIn()" class="user-info">
+                <i class="fas fa-user me-2"></i>
+                {{ authService.getCurrentUser()?.username }} 
+                <span class="role-badge" [class.admin]="authService.isAdmin()" [class.employee]="authService.isEmployee()">
+                    {{ authService.getCurrentUser()?.role }}
+                </span>
+            </span>
             <button *ngIf="!authService.isLoggedIn()" class="btn btn-login" (click)="login()">
                 <i class="fas fa-sign-in-alt me-2"></i> Login
             </button>
@@ -36,6 +40,4 @@
 
 
 
-
-
-<!-- style="height:32px; width:auto; vertical-align:middle; margin-left:2%;margin-right: 2px;margin-bottom: 10px; border:1px solid white;"> -->
+ 

@@ -10,4 +10,13 @@ import java.util.List;
 public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Integer> {
 
     List<EmployeeEntity> findEmployeesByDepartmentType(@NotNull(message = "Department must be insert") DepartmentType departmentType);
+    
+    EmployeeEntity findByUsername(String username);
+    EmployeeEntity findByName(String name);
+    EmployeeEntity findByNameIgnoreCase(String name);
+    
+    boolean existsByUsername(String username);
+    
+    boolean existsByEmail(String email);
 }
+//jpa

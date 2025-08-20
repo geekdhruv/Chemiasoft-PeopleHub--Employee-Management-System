@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { User } from '../models/user.model';
+import { User, Role } from '../models/user.model';
 import { AuthRequest } from '../models/user.model';
 import { AuthResponse } from '../models/user.model';
 import { environment } from '../../environment/environment';
@@ -28,7 +28,8 @@ export class AuthService {
           console.log(response);
           
           const user: User = {
-            username: response.username
+            username: response.username,
+            role: response.role
           };
           localStorage.setItem('currentUser', JSON.stringify(user));
           localStorage.setItem('token', response.token);
@@ -49,5 +50,20 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  getCurrentUser(): User | null {
+    const user = localStorage.getItem('currentUser');
+    return user ? JSON.parse(user) : null;
+  }
+
+  isAdmin(): boolean {
+    const user = this.getCurrentUser();
+    return user?.role === Role.ADMIN;
+  }
+
+  isEmployee(): boolean {
+    const user = this.getCurrentUser();
+    return user?.role === Role.EMPLOYEE;
   }
 }

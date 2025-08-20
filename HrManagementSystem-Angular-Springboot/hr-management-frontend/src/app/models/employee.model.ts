@@ -18,4 +18,6 @@ export class EmployeePost {
     name!: string;
     email!: string;
     departmentType!: DepartmentType;
+    username!: string;
+    password!: string;
 }

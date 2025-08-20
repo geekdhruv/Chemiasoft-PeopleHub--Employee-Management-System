@@ -107,6 +107,19 @@
     margin-top: 4px;
     border-radius: 2px;
 }
+.navbar-logo {
+    height: 32px; 
+    width: auto;
+    vertical-align: middle;
+    margin-right: 12px;
+    border: 1px solid white;
+}
+
+/* Adjust brand container for logo */
+.navbar-brand-container {
+    display: flex;
+    align-items: center;
+}
 
 @media (max-width: 768px) {
     .app-navbar {
@@ -132,4 +145,30 @@
     .navbar-logo {
         height: 35px;
     }
+}
+
+.user-info {
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.role-badge {
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.role-badge.admin {
+    background-color: #dc2626;
+    color: white;
+}
+
+.role-badge.employee {
+    background-color: #059669;
+    color: white;
 }

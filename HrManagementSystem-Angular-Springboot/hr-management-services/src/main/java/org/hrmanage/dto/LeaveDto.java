@@ -18,7 +18,6 @@ public class LeaveDto {
 
     private Integer id;
 
-    @NotNull(message = "Employee ID is required")
     private Integer employeeId;
 
     @NotNull(message = "Leave type is required")
@@ -35,7 +34,6 @@ public class LeaveDto {
     @Size(max = 500, message = "Reason can't exceed 500 characters")
     private String reason;
 
-    @NotNull(message = "Leave status is required")
     private LeaveStatus status;
 
     private LocalDate createdAt;

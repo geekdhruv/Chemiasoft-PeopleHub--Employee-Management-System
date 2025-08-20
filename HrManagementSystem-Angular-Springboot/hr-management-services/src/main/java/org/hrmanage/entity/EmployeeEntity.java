@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hrmanage.util.DepartmentType;
+import org.hrmanage.util.Role;
 
 import java.time.LocalDate;
 
@@ -25,9 +26,19 @@ public class EmployeeEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private DepartmentType departmentType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.EMPLOYEE;
 
     @Column(updatable = false)
     private LocalDate createdAt;

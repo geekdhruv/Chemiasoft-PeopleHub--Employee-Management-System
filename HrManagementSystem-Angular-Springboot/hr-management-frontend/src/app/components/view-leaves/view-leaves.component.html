@@ -27,8 +27,8 @@
                     <input type="text" class="search-input" placeholder="Search by End Date" [(ngModel)]="endDate">
                 </div>
 
-                <button class="btn btn-success control-btn" (click)="addLeave()">
-                    <i class="fas fa-plus-circle me-2"></i> Leave
+                <button *ngIf="authService.isEmployee()" class="btn btn-success control-btn" (click)="addLeave()">
+                    <i class="fas fa-plus-circle me-2"></i> Apply Leave
                 </button>
             </div>
         </div>
@@ -63,11 +63,17 @@
                         <td>{{ leave.createdAt }}</td>
                         <td>{{ leave.updatedAt }}</td>
                         <td class="text-center action-buttons">
-                            <button class="btn btn-warning btn-action" (click)="updateLeave(leave)">
+                            <button *ngIf="authService.isAdmin()" class="btn btn-warning btn-action" (click)="updateLeave(leave)">
                                 <i class="fas fa-edit me-1"></i> Edit
                             </button>
-                            <button class="btn btn-danger btn-action" (click)="deleteLeave(leave)">
+                            <button *ngIf="authService.isEmployee()" class="btn btn-danger btn-action" (click)="deleteLeave(leave)">
                                 <i class="fas fa-trash-alt me-1"></i> Delete
+                            </button>
+                            <button *ngIf="authService.isAdmin() && leave.status === 'PENDING'" class="btn btn-success btn-action" (click)="approveLeave(leave)">
+                                <i class="fas fa-check me-1"></i> Approve
+                            </button>
+                            <button *ngIf="authService.isAdmin() && leave.status === 'PENDING'" class="btn btn-danger btn-action" (click)="rejectLeave(leave)">
+                                <i class="fas fa-times me-1"></i> Reject
                             </button>
                         </td>
                     </tr>

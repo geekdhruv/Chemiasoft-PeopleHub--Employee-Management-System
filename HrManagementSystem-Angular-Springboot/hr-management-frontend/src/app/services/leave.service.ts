@@ -22,15 +22,23 @@ export class LeaveService {
     }
 
     createLeave(leave: LeavePost): Observable<LeaveGet> {
-        return this.http.post<LeaveGet>(this.apiUrl, leave);
+        return this.http.post<LeaveGet>(`${this.apiUrl}/apply`, leave);
     }
 
     updateLeave(leave: LeavePost, id: number): Observable<LeaveGet> {
-        return this.http.put<LeaveGet>(`${this.apiUrl}/${id}`, leave);
+        return this.http.put<LeaveGet>(`${this.apiUrl}/edit/${id}`, leave);
     }
 
     deleteLeave(id: number): Observable<boolean> {
-        return this.http.delete<boolean>(`${this.apiUrl}/${id}`);
+        return this.http.delete<boolean>(`${this.apiUrl}/delete/${id}`);
+    }
+
+    approveLeave(id: number): Observable<LeaveGet> {
+        return this.http.put<LeaveGet>(`${this.apiUrl}/approve/${id}`, {});
+    }
+
+    rejectLeave(id: number): Observable<LeaveGet> {
+        return this.http.put<LeaveGet>(`${this.apiUrl}/reject/${id}`, {});
     }
 
     exportLeaveReport(): Observable<Blob> {

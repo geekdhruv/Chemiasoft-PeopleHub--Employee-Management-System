@@ -45,7 +45,7 @@ export enum LeaveType {
     startDate: string;
     endDate: string;
     reason?: string;
-    status: LeaveStatus;
+    status?: LeaveStatus;
   }
 
 //   {

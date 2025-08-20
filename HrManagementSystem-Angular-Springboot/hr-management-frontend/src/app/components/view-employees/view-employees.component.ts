@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faUsers, faFileAlt, faPlusCircle, faSearch, faEnvelope, faFilter, faEdit, faTrashAlt, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-view-employees',
@@ -35,7 +36,8 @@ export class ViewEmployeesComponent {
 
   constructor(
     private employeeService: EmployeeService,
-    private router: Router
+    private router: Router,
+    public authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -79,6 +81,14 @@ export class ViewEmployeesComponent {
           <input type="email" id="swal-email" class="swal-input" placeholder="Enter email address">
         </div>
         <div class="swal-form-group">
+          <label class="swal-label">Username</label>
+          <input type="text" id="swal-username" class="swal-input" placeholder="Enter username">
+        </div>
+        <div class="swal-form-group">
+          <label class="swal-label">Password</label>
+          <input type="text" id="swal-password" class="swal-input" placeholder="Set a password">
+        </div>
+        <div class="swal-form-group">
           <label class="swal-label">Department</label>
           <select id="swal-dept" class="swal-select">
             <option value="" disabled selected>Select Department</option>
@@ -101,20 +111,21 @@ export class ViewEmployeesComponent {
       preConfirm: () => {
         const name = (document.getElementById('swal-name') as HTMLInputElement).value.trim();
         const email = (document.getElementById('swal-email') as HTMLInputElement).value.trim();
+        const username = (document.getElementById('swal-username') as HTMLInputElement).value.trim();
+        const password = (document.getElementById('swal-password') as HTMLInputElement).value.trim();
         const department = (document.getElementById('swal-dept') as HTMLSelectElement).value;
   
-        if (!name || !email || !department) {
+        if (!name || !email || !username || !password || !department) {
           Swal.showValidationMessage('Please fill all fields');
           return;
         }
   
-        return { name, email, departmentType: department };
+        return { name, email, username, password, departmentType: department } as EmployeePost;
       }
     }).then((result) => {
       if (result.isConfirmed && result.value) {
         if (this.validateEmployee(result.value)) {
-          const employee: EmployeePost = result.value;
-          this.employeeService.createEmployee(employee).subscribe({
+          this.employeeService.createEmployee(result.value as EmployeePost).subscribe({
             next: (response) => {
               if (response != null) {
                 Swal.fire({
@@ -175,6 +186,14 @@ export class ViewEmployeesComponent {
           <input type="email" id="swal-email" class="swal-input" value="${employee.email}">
         </div>
         <div class="swal-form-group">
+          <label class="swal-label">Username</label>
+          <input type="text" id="swal-username" class="swal-input" placeholder="Enter username">
+        </div>
+        <div class="swal-form-group">
+          <label class="swal-label">Password</label>
+          <input type="text" id="swal-password" class="swal-input" placeholder="Set a password (leave blank to keep same)">
+        </div>
+        <div class="swal-form-group">
           <label class="swal-label">Department</label>
           <select id="swal-dept" class="swal-select">
             <option value="" disabled>Select Department</option>
@@ -196,20 +215,21 @@ export class ViewEmployeesComponent {
       preConfirm: () => {
         const name = (document.getElementById('swal-name') as HTMLInputElement).value.trim();
         const email = (document.getElementById('swal-email') as HTMLInputElement).value.trim();
+        const username = (document.getElementById('swal-username') as HTMLInputElement).value.trim();
+        const password = (document.getElementById('swal-password') as HTMLInputElement).value.trim();
         const department = (document.getElementById('swal-dept') as HTMLSelectElement).value;
   
-        if (!name || !email || !department) {
+        if (!name || !email || !username || !department) {
           Swal.showValidationMessage('Please fill all fields');
           return;
         }
-  
-        return { id: employee.id, name, email, departmentType: department };
+
+        return { id: employee.id, name, email, username, password, departmentType: department, role: 'EMPLOYEE' };
       }
     }).then((result) => {
       if (result.isConfirmed && result.value) {
         if (this.validateEmployee(result.value)) {
-          const updated: Employee = result.value;
-          this.employeeService.updateEmployee(updated).subscribe({
+          this.employeeService.updateEmployee(result.value).subscribe({
             next: () => {
               Swal.fire({
                 title: 'Success!',

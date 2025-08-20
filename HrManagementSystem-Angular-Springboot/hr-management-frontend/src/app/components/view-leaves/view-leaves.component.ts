@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import Swal from 'sweetalert2';
-import { faUsers, faFileAlt, faPlusCircle, faSearch, faEnvelope, faFilter, faEdit, faTrashAlt, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faFileAlt, faPlusCircle, faSearch, faEnvelope, faFilter, faEdit, faTrashAlt, faFolderOpen, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../models/employee.model';
 import { Leave, LeaveGet, LeaveStatus, LeaveType } from '../../models/leave.model';
 import { LeaveService } from '../../services/leave.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-view-leaves',
@@ -27,6 +28,8 @@ export class ViewLeavesComponent implements OnInit {
   faEdit = faEdit;
   faTrashAlt = faTrashAlt;
   faFolderOpen = faFolderOpen;
+  faCheck = faCheck;
+  faTimes = faTimes;
 
   leaves: LeaveGet[] = [];
   employees: Employee[] = [];
@@ -37,7 +40,8 @@ export class ViewLeavesComponent implements OnInit {
   constructor(
     private leaveService: LeaveService,
     private employeeService: EmployeeService,
-    private router: Router
+    private router: Router,
+    public authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -81,32 +85,28 @@ export class ViewLeavesComponent implements OnInit {
       },
       error: () => Swal.fire('Error', 'Failed to fetch leaves', 'error')
     });
-    this.employeeService.getAllEmployees().subscribe({
-      next: (res) => this.employees = res,
-      error: () => Swal.fire('Error', 'Failed to fetch employees', 'error')
-    });
+    if (this.authService.isAdmin()) {
+      this.employeeService.getAllEmployees().subscribe({
+        next: (res) => this.employees = res,
+        error: () => Swal.fire('Error', 'Failed to fetch employees', 'error')
+      });
+    }
   }
 
   addLeave() {
-    const employeeOptions = this.employees
-      .map(emp => `<option value="${emp.id}">${emp.id} - ${emp.name}</option>`)
-      .join('');
+    // Determine current user employee id
+    const me = this.authService.getCurrentUser();
 
     const leaveTypeOptions = Object.values(LeaveType)
       .map(type => `<option value="${type}">${type}</option>`)
       .join('');
 
-    const leaveStatusOptions = Object.values(LeaveStatus)
-      .map(status => `<option value="${status}">${status}</option>`)
-      .join('');
+    // Employees should not choose status; default to PENDING
 
     Swal.fire({
       title: '<strong>Add New Leave</strong>',
       html: `
-        <div class="swal-form-group">
-          <label class="swal-label">Employee</label>
-          <select id="swal-empId" class="swal-select">${employeeOptions}</select>
-        </div>
+        
         <div class="swal-form-group">
           <label class="swal-label">Leave Type</label>
           <select id="swal-leaveType" class="swal-select">${leaveTypeOptions}</select>
@@ -123,28 +123,23 @@ export class ViewLeavesComponent implements OnInit {
           <label class="swal-label">Reason</label>
           <textarea id="swal-reason" class="swal-input"></textarea>
         </div>
-        <div class="swal-form-group">
-          <label class="swal-label">Status</label>
-          <select id="swal-status" class="swal-select">${leaveStatusOptions}</select>
-        </div>
+        
       `,
       showCancelButton: true,
       confirmButtonText: 'Add Leave',
       preConfirm: () => {
-        const employeeId = parseInt((document.getElementById('swal-empId') as HTMLSelectElement).value);
         const leaveType = (document.getElementById('swal-leaveType') as HTMLSelectElement).value as LeaveType;
         const startDate = (document.getElementById('swal-startDate') as HTMLInputElement).value;
         const endDate = (document.getElementById('swal-endDate') as HTMLInputElement).value;
         const reason = (document.getElementById('swal-reason') as HTMLTextAreaElement).value.trim();
-        const status = (document.getElementById('swal-status') as HTMLSelectElement).value as LeaveStatus;
+        const status = LeaveStatus.PENDING as LeaveStatus;
 
-        if (!employeeId || !leaveType || !startDate || !endDate || !status) {
+        if (!leaveType || !startDate || !endDate) {
           Swal.showValidationMessage('Please fill all required fields');
           return false;
         }
 
         return {
-          employeeId,
           leaveType,
           startDate,
           endDate,
@@ -274,6 +269,66 @@ export class ViewLeavesComponent implements OnInit {
             this.getAllLeaves();
           },
           error: () => Swal.fire('Error', 'Failed to delete leave', 'error')
+        });
+      }
+    });
+  }
+
+  approveLeave(leave: LeaveGet) {
+    if (!leave || !leave.id) {
+      Swal.fire('Error', 'Invalid leave record', 'error');
+      return;
+    }
+
+    Swal.fire({
+      title: 'Approve this leave?',
+      html: `
+        <p><strong>Employee:</strong> ${leave.employee?.name || 'Unknown'}</p>
+        <p><strong>Start Date:</strong> ${leave.startDate || 'Not specified'}</p>
+        <p><strong>End Date:</strong> ${leave.endDate || 'Not specified'}</p>
+      `,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, approve',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed && leave.id) {
+        this.leaveService.approveLeave(leave.id).subscribe({
+          next: () => {
+            Swal.fire('Approved', 'Leave request approved successfully', 'success');
+            this.getAllLeaves();
+          },
+          error: () => Swal.fire('Error', 'Failed to approve leave', 'error')
+        });
+      }
+    });
+  }
+
+  rejectLeave(leave: LeaveGet) {
+    if (!leave || !leave.id) {
+      Swal.fire('Error', 'Invalid leave record', 'error');
+      return;
+    }
+
+    Swal.fire({
+      title: 'Reject this leave?',
+      html: `
+        <p><strong>Employee:</strong> ${leave.employee?.name || 'Unknown'}</p>
+        <p><strong>Start Date:</strong> ${leave.startDate || 'Not specified'}</p>
+        <p><strong>End Date:</strong> ${leave.endDate || 'Not specified'}</p>
+      `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, reject',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed && leave.id) {
+        this.leaveService.rejectLeave(leave.id).subscribe({
+          next: () => {
+            Swal.fire('Rejected', 'Leave request rejected', 'success');
+            this.getAllLeaves();
+          },
+          error: () => Swal.fire('Error', 'Failed to reject leave', 'error')
         });
       }
     });

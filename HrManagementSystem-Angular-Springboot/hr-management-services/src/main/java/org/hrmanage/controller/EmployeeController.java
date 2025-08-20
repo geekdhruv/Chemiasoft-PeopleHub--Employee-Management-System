@@ -4,8 +4,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.hrmanage.dto.EmployeeDto;
+import org.hrmanage.dto.EmployeeRegistrationDto;
+import org.hrmanage.dto.EmployeeUpdateDto;
 import org.hrmanage.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -15,12 +18,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
-@RequestMapping("/api/employee")
+@RequestMapping("/api/employees")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @GetMapping
+    @GetMapping("/list")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<EmployeeDto>> getAllEmployees() {
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
@@ -30,13 +34,15 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
 
-    @PostMapping
-    public ResponseEntity<EmployeeDto> createEmployee(@Valid @RequestBody EmployeeDto employeeDto) {
-        return ResponseEntity.ok(employeeService.addEmployee(employeeDto));
+    @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<EmployeeDto> createEmployee(@Valid @RequestBody EmployeeRegistrationDto employeeRegistrationDto) {
+        return ResponseEntity.ok(employeeService.addEmployeeWithAuth(employeeRegistrationDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable("id") Integer id, @Valid @RequestBody EmployeeDto employeeDto) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable("id") Integer id, @Valid @RequestBody EmployeeUpdateDto employeeDto) {
         return ResponseEntity.ok(employeeService.updateEmployee(id, employeeDto));
     }
 
