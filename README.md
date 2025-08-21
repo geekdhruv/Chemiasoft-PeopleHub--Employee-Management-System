@@ -17,7 +17,7 @@ It streamlines employee leave requests, approvals, and role-based management for
 - **Security:** Spring Security (JWT)  
 
 ## 📂 Project Structure
-- `frontend/` → Angular application  
+- `frontend/` → Angular applications
 - `backend/` → Spring Boot REST APIs  
 
 
