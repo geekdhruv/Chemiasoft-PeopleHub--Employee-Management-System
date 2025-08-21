@@ -1,4 +1,4 @@
-# **HR Management System**
+# **Employee Leave Management System**
 
 ## **Overview**
 The HR Management System is a comprehensive web application designed to streamline human resource operations. Built with Angular frontend and Spring Boot backend, it offers secure authentication via JWT and Spring Security, while providing a modern UI experience through Angular Material and Bootstrap CSS.
@@ -77,20 +77,5 @@ The system provides RESTful APIs for all operations:
 Detailed API documentation is available via Swagger UI at `/swagger-ui.html` when the application runs.
 
 ---
-
-## **Screenshots**
-
-![Dashboard](Screenshots/dashboard.png)
-![Login](Screenshots/login.png)
-![Employee Management](Screenshots/employee-management.png)
-
-![Leave Management](Screenshots/leave-management.png)
-
----
-
-## **License**
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 
 
